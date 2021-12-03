@@ -34,3 +34,20 @@
 (def parsed-input (parse real-input))
 
 (part1 parsed-input)
+
+
+;;
+;; PART 2
+;;
+
+(defn part2 [input]
+  (->> 
+   input
+   (partition 3 1)
+   (map (fn [[one two three]] (+ one two three)))
+   (partition 2 1)
+   (filter (fn [[f s]] (> s f)))
+   (count)))
+
+(part2 parsed-test-input)
+(part2 parsed-input)
