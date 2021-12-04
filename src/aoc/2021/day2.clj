@@ -24,7 +24,6 @@ forward 2")
          {:keys [x y]} {:x 0 :y 0}]
     (if-let [current-dir (first directions)]
       (let [{:keys [direction amount]} current-dir]
-        (println x y direction amount)
         (case direction
           :forward (recur (rest directions) {:x (+ x amount) :y y})
           :down (recur (rest directions) {:x x :y (+ y amount)})
@@ -41,3 +40,25 @@ forward 2")
 (def parsed-input (parse real-input))
 
 (part1 parsed-input)
+
+
+;;;;;;;;;;;;
+;; Part 2 ;;
+;;;;;;;;;;;;
+
+(defn part2 [parsed-input]
+  (loop [directions parsed-input
+         {:keys [x y aim]} {:x 0 :y 0 :aim 0}]
+    (if-let [current-dir (first directions)]
+      (let [{:keys [direction amount]} current-dir]
+        (case direction
+          :forward (recur (rest directions) {:x (+ x amount) :y (+ y (* aim amount)) :aim aim})
+          :down (recur (rest directions) {:x x :y y :aim (+ aim amount)})
+          :up (recur (rest directions) {:x x :y y :aim (- aim amount)})
+          (recur (rest directions) {:x x :y y})))
+      (* x y)))
+  )
+
+(part2 (parse test-input))
+
+(part2 parsed-input)
