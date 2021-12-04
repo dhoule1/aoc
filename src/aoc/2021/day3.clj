@@ -30,10 +30,10 @@ parsed-test-input
     (map (fn [i] (if (= i 0) 1 0)) gamma))
   
   (let [gamma-seq  (->> input
-                    (map seq)
-                    (apply map (fn [& args] (frequencies args)))
-                    (map (fn [f] (if (> (get f \0) (get f \1)) 0 1 )))
-                    )]
+                        (map seq)
+                        (apply map (fn [& args] (frequencies args)))
+                        (map (fn [f] (if (> (get f \0) (get f \1)) 0 1 )))
+                        )]
     (let [gamma (to-decimal gamma-seq)
           epsilon (to-decimal (flip gamma-seq))]
       (* gamma epsilon))))
