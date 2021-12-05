@@ -25,7 +25,6 @@
 (def input (slurp "resources/aoc/2021/day4.txt"))
 
 
-
 (defn ->board [board-str]
   (-> board-str
       str/split-lines
@@ -117,7 +116,38 @@
              ))
        ))))
 
+
+
+
+;;;;;;;;;;;;
+;; Part 2 ;;
+;;;;;;;;;;;;
+
+
+(defn part2
+  ([] (part2 input))
+  ([input]
+   (let [bingo-numbers (->> input str/split-lines first (#(str/split % #","))  (map #(Integer/parseInt (str %))))
+         boards (-> input (str/split #"\n\n") rest (#(mapv ->board %)))]
+     (loop [numbers bingo-numbers
+            boards boards]
+       (println (count boards))
+       (let [current (first numbers)
+             all-boards (map (update-board current) boards)
+             filtered-boards (filter #(not (has-bingo? %)) all-boards)]
+         (if (and (= 1 (count all-boards)) (empty? filtered-boards))
+           (calculate-score (first all-boards) current)
+           (recur (rest numbers) filtered-boards)))
+       ))))
+
+
+
+
+
+
 (comment
   (part1 example)
   (part1)
+  (part2 example)
+  (part2)
   )
