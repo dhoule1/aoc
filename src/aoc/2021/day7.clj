@@ -14,9 +14,6 @@
 
 
 (defn part1 [input_raw]
-  (defn calculate-fuel-cost [origin destination]
-    (Math/abs (- origin destination)))
-
   (let [input (parse input_raw)
         min_pos (reduce min input)
         max_pos (reduce max input)]
