@@ -40,7 +40,7 @@
                 (let [result
                       (reduce
                        (fn [acc current]
-                         (if-let [r (pairs current)]
+                         (if (pairs current)
                            (do
                              (.push acc current)
                              acc)
@@ -49,8 +49,7 @@
                                (do
                                  (.pop acc)
                                  acc)
-                               (do
-                                 (reduced current))))))
+                               (reduced current)))))
                        (java.util.ArrayDeque.)
                        line)]
                   (if (char? result) result nil))))]
