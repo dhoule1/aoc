@@ -62,3 +62,36 @@
 ;;;;;;;;;;;;
 ;; Part 2 ;;
 ;;;;;;;;;;;;
+
+((clojure.set/map-invert pairs) \])
+
+(defn part2 [input]
+  (let [closers (clojure.set/map-invert pairs)]
+    (let [scores
+          (for [line (parse input)
+                :let [enriched (enrich line)]
+                :when (not (:corrupted? enriched))]
+            (let [complete-by (:rest
+                               (reduce (fn [acc current]
+                                         (if (closers current) (update acc :closers (fn [old] (conj old current)))
+                                             (let [last-seen (peek (:closers acc))]
+                                               (if (= last-seen (pairs current))
+                                                 (update acc :closers (fn [old] (pop old)))
+                                                 (update acc :rest (fn [old] (conj old (pairs current))))))))
+                                       {:rest [] :closers []}
+                                       (reverse line)))]
+              (reduce
+               (fn [score current]
+                 (let [new-score (* score 5)]
+                   (condp = current
+                     \) (+ new-score 1)
+                     \] (+ new-score 2)
+                     \} (+ new-score 3)
+                     \> (+ new-score 4))))
+               0
+               complete-by)))]
+      (nth (sort scores) (Math/floor (/ (count scores) 2)) ))))
+
+
+(part2 example)
+(part2 input)
